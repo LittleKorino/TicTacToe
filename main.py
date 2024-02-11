@@ -1,5 +1,3 @@
-#Got this example from pygame
-# Example file showing a circle moving on screen
 import pygame
 
 # pygame setup
