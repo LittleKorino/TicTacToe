@@ -16,6 +16,8 @@ boolDark = True
 if boolDark:
     #Set colour pallette
     color = darkmode
+else:
+    color = whitemode
 
 while running:
     # poll for events
