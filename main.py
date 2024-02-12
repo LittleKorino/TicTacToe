@@ -32,15 +32,15 @@ while running:
     screen.fill(color[0])
 
     #Rectanglessss!!!
-    pygame.draw.rect(screen, color[1], [0, 0, t, t], 10)
-    pygame.draw.rect(screen, color[1], [0, t, t, t], 10)
-    pygame.draw.rect(screen, color[1], [t, 0, t, t], 10)
-    pygame.draw.rect(screen, color[1], [2*t, 0, t, t], 10)
-    pygame.draw.rect(screen, color[1], [0, 2*t, t, t], 10)
-    pygame.draw.rect(screen, color[1], [t, t, t, t], 10)
-    pygame.draw.rect(screen, color[1], [2*t, t, t, t], 10)
-    pygame.draw.rect(screen, color[1], [t, 2*t, t, t], 10)
-    pygame.draw.rect(screen, color[1], [2*t, 2* t, t, t], 10)
+    pygame.draw.rect(screen, color[1], [0, 0, t, t], 5)
+    pygame.draw.rect(screen, color[1], [0, t, t, t], 5)
+    pygame.draw.rect(screen, color[1], [t, 0, t, t], 5)
+    pygame.draw.rect(screen, color[1], [2*t, 0, t, t], 5)
+    pygame.draw.rect(screen, color[1], [0, 2*t, t, t], 5)
+    pygame.draw.rect(screen, color[1], [t, t, t, t], 5)
+    pygame.draw.rect(screen, color[1], [2*t, t, t, t], 5)
+    pygame.draw.rect(screen, color[1], [t, 2*t, t, t], 5)
+    pygame.draw.rect(screen, color[1], [2*t, 2* t, t, t], 5)
     # flip() the display to put your work on screen
     pygame.display.flip()
 
