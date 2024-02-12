@@ -2,10 +2,15 @@ import pygame
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+windowwidth = 1280
+windowheight = 720
+screen = pygame.display.set_mode((windowwidth, windowheight))
 clock = pygame.time.Clock()
 running = True
 
+# Game setup
+(h,k) = (windowwidth/2, windowheight/2)
+Charwidth = 200
 
 # Set colours
 darkmode = ["black","white"]
@@ -18,9 +23,6 @@ if boolDark:
 else:
     color = whitemode
 
-#Testing   
-t = 200
-
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -31,16 +33,16 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill(color[0])
 
-    #Rectanglessss!!!
-    pygame.draw.rect(screen, color[1], [0, 0, t, t], 5)
-    pygame.draw.rect(screen, color[1], [0, t, t, t], 5)
-    pygame.draw.rect(screen, color[1], [t, 0, t, t], 5)
-    pygame.draw.rect(screen, color[1], [2*t, 0, t, t], 5)
-    pygame.draw.rect(screen, color[1], [0, 2*t, t, t], 5)
-    pygame.draw.rect(screen, color[1], [t, t, t, t], 5)
-    pygame.draw.rect(screen, color[1], [2*t, t, t, t], 5)
-    pygame.draw.rect(screen, color[1], [t, 2*t, t, t], 5)
-    pygame.draw.rect(screen, color[1], [2*t, 2* t, t, t], 5)
+    #Vertical lines
+    #Refer the picture in readme for the position of the lines.
+    pygame.draw.line(screen, color[1], (h - 0.5*Charwidth , k - 1.5*Charwidth), ((h - 0.5*Charwidth) , (k - 1.5*Charwidth) + 3*Charwidth ), 10)
+    pygame.draw.line(screen, color[1], (h + 0.5*Charwidth , k - 1.5*Charwidth), ((h + 0.5*Charwidth) , (k - 1.5*Charwidth) + 3*Charwidth ), 10)
+    
+    #Horizontal lines
+    pygame.draw.line(screen, color[1], (h - 1.5*Charwidth , k - 0.5*Charwidth), ((h - 1.5*Charwidth) + 3*Charwidth , (k - 0.5*Charwidth) ), 10)
+    pygame.draw.line(screen, color[1], (h - 1.5*Charwidth , k + 0.5*Charwidth), ((h - 1.5*Charwidth) + 3*Charwidth , (k + 0.5*Charwidth) ), 10)
+
+    
     # flip() the display to put your work on screen
     pygame.display.flip()
 
@@ -48,8 +50,4 @@ while running:
     clock.tick(60)
 
 pygame.quit()
-#testing by *NIKHIL*
-#Teeeesststinf By ✈️✈️✈️
 
-#This is for narentharentharentharentharentharentharentharentharentharentharentharentharentharentharentharenthare
-#This is for narentharentharentharentharentharentharentharentharentharentharentharentharen
