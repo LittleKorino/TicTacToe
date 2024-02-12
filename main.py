@@ -10,7 +10,7 @@ clock = pygame.time.Clock()
 running = True
 
 # Game setup
-(h,k) = (windowwidth/2, windowheight/2)
+(CentreX,CentreY) = (windowwidth/2, windowheight/2)
 Charwidth = 200
 
 # Set colours
@@ -36,17 +36,17 @@ while running:
 
     #Vertical lines
     #Refer the picture in readme for the position of the lines.
-    pygame.draw.line(screen, color[1], (h - 0.5*Charwidth , k - 1.5*Charwidth), ((h - 0.5*Charwidth) , (k - 1.5*Charwidth) + 3*Charwidth ), 10)
-    pygame.draw.line(screen, color[1], (h + 0.5*Charwidth , k - 1.5*Charwidth), ((h + 0.5*Charwidth) , (k - 1.5*Charwidth) + 3*Charwidth ), 10)
+    pygame.draw.line(screen, color[1], (CentreX - 0.5*Charwidth , CentreY - 1.5*Charwidth), ((CentreX - 0.5*Charwidth) , (CentreY - 1.5*Charwidth) + 3*Charwidth ), 10)
+    pygame.draw.line(screen, color[1], (CentreX + 0.5*Charwidth , CentreY - 1.5*Charwidth), ((CentreX + 0.5*Charwidth) , (CentreY - 1.5*Charwidth) + 3*Charwidth ), 10)
     
     #Horizontal lines
-    pygame.draw.line(screen, color[1], (h - 1.5*Charwidth , k - 0.5*Charwidth), ((h - 1.5*Charwidth) + 3*Charwidth , (k - 0.5*Charwidth) ), 10)
-    pygame.draw.line(screen, color[1], (h - 1.5*Charwidth , k + 0.5*Charwidth), ((h - 1.5*Charwidth) + 3*Charwidth , (k + 0.5*Charwidth) ), 10)
+    pygame.draw.line(screen, color[1], (CentreX - 1.5*Charwidth , CentreY - 0.5*Charwidth), ((CentreX - 1.5*Charwidth) + 3*Charwidth , (CentreY - 0.5*Charwidth) ), 10)
+    pygame.draw.line(screen, color[1], (CentreX - 1.5*Charwidth , CentreY + 0.5*Charwidth), ((CentreX - 1.5*Charwidth) + 3*Charwidth , (CentreY + 0.5*Charwidth) ), 10)
 
     #Draw X
-    drawXO.drawX(screen, h , k , 0.75 * Charwidth,color[1])
+    drawXO.drawX(screen, CentreX , CentreY , 0.75 * Charwidth,color[1])
     #draw O
-    drawXO.drawO(screen,h , k - Charwidth, 0.75* Charwidth,color[1])
+    drawXO.drawO(screen,CentreX , CentreY - Charwidth, 0.75* Charwidth,color[1])
     # flip() the display to put your work on screen
     pygame.display.flip()
 
