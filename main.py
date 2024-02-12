@@ -1,4 +1,5 @@
 import pygame
+import drawXO
 
 # pygame setup
 pygame.init()
@@ -42,7 +43,10 @@ while running:
     pygame.draw.line(screen, color[1], (h - 1.5*Charwidth , k - 0.5*Charwidth), ((h - 1.5*Charwidth) + 3*Charwidth , (k - 0.5*Charwidth) ), 10)
     pygame.draw.line(screen, color[1], (h - 1.5*Charwidth , k + 0.5*Charwidth), ((h - 1.5*Charwidth) + 3*Charwidth , (k + 0.5*Charwidth) ), 10)
 
-    
+    #Draw X
+    drawXO.drawX(screen, h , k , 0.75 * Charwidth,color[1])
+    #draw O
+    drawXO.drawO(screen,h , k - Charwidth, 0.75* Charwidth,color[1])
     # flip() the display to put your work on screen
     pygame.display.flip()
 
