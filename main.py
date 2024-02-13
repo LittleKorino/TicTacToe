@@ -52,25 +52,25 @@ gameOver = False
 
 # Check gameStatus
 def CheckGameStatus(board):
-    #Checking Horizontal
+    #Checking Vertical
     for i in range(3):
         if board[i][0] == board[i][1] and board[i][1] == board[i][2]:
             gameOver = True
-            return board[i][0]
+            return (board[i][0],"Vertical"+str(i))
       
-    #Checking Vertical
+    #Checking Horizontal
     for i in range(3):
         if board[0][i] == board[1][i] and board[1][i] == board[2][i]:
             gameOver = True
-            return board[0][i]
+            return (board[0][i],"Horizontal"+str(i))
 
     #Checking Diagonal
     if board[0][0] == board[1][1] and board[1][1] == board[2][2]:
         gameOver = True
-        return board[0][0]
+        return (board[0][0],"Diagonal1")
     elif board[0][2] == board[1][1] and board[1][1] == board[2][0]:
         gameOver = True
-        return board[0][2]
+        return (board[0][2],"Diagonal2")
     else:
         gameOver = False
         return "Continue"
@@ -84,6 +84,21 @@ def isBoardFull(board):
     gameOver = True
     return True
 
+#Check which Row/column need to be striken
+def DrawCrosssedLine(board):
+    #Check Horizontal
+    for i in range(3):
+        if CheckGameStatus(board)[1] == "Horizontal"+str(i):
+            pygame.draw.line(screen, (255,0,0), (CentreX - Charwidth + i*Charwidth, CentreY - 1.5*Charwidth), (CentreX - Charwidth + i*Charwidth, CentreY + 1.5*Charwidth), 10)
+    #Check verical
+    for i in range(3):
+        if CheckGameStatus(board)[1] == "Vertical"+str(i):
+            pygame.draw.line(screen, (255,0,0), (CentreX - 1.5*Charwidth, CentreY - Charwidth + i*Charwidth), (CentreX + 1.5*Charwidth, CentreY - Charwidth + i*Charwidth), 10)
+    #Check the diagonals
+    if CheckGameStatus(board)[1] == "Diagonal1":
+            pygame.draw.line(screen, (255,0,0), (CentreX - 1.5*Charwidth, CentreY - 1.5*Charwidth), (CentreX + 1.5*Charwidth, CentreY + 1.5*Charwidth), 10)
+    if CheckGameStatus(board)[1] == "Diagonal2": 
+            pygame.draw.line(screen, (255,0,0), (CentreX - 1.5*Charwidth, CentreY + 1.5*Charwidth), (CentreX + 1.5*Charwidth, CentreY - 1.5*Charwidth), 10)
 
 while running:
     # poll for events
@@ -132,19 +147,19 @@ while running:
         DrawBoard(board)
 
 
-    if CheckGameStatus(board) == "X" :
+    if CheckGameStatus(board)[0] == "X" :
         #print("X Won")
         drawText("X Won", text_font, color[1], screen, CentreX - 450, CentreY)
         gameOver = True
-    if CheckGameStatus(board) == "O" :
+    if CheckGameStatus(board)[0] == "O" :
         #print("O Won")
         drawText("O Won", text_font, color[1], screen, CentreX - 450, CentreY)
         gameOver = True
     if isBoardFull(board) and gameOver == False:
         #print("Draw")
         drawText("Draw", text_font, color[1], screen, CentreX - 450, CentreY)
-
-
+    if gameOver == True:
+        DrawCrosssedLine(board)
     # flip() the display to put your work on screen
     pygame.display.flip() 
 
