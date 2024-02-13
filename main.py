@@ -25,12 +25,6 @@ darkmode = ["black","white"]
 whitemode = ["white","black"]
 boolDark = True
 
-if boolDark:
-    #Set colour pallette
-    color = darkmode
-else:
-    color = whitemode
-
 
 def DrawBoard(board):
       for i in range(3):
@@ -97,6 +91,18 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    
+        if event.type == pygame.KEYDOWN:       
+            # checking if key "A" was pressed
+            if event.key == pygame.K_e:
+                print("E pressed")
+                boolDark = not boolDark
+        
+    if boolDark:
+    #Set colour pallette
+        color = darkmode
+    else:
+        color = whitemode
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill(color[0])
