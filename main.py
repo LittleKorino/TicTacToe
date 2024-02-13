@@ -36,9 +36,9 @@ def DrawBoard(board):
       for i in range(3):
         for j in range (3):
             if board[i][j] == "X":
-                drawXO.drawX(screen, CentreX - Charwidth + j*Charwidth, CentreY - Charwidth + i*Charwidth, 0.75*Charwidth,color[1])
+                drawXO.drawX(screen, CentreX - Charwidth + j*Charwidth, CentreY - Charwidth + i*Charwidth, 0.7*Charwidth,color[1])
             elif board[i][j] == "O":
-                drawXO.drawO(screen, CentreX - Charwidth + j*Charwidth, CentreY - Charwidth + i*Charwidth, 0.75*Charwidth,color[1])
+                drawXO.drawO(screen, CentreX - Charwidth + j*Charwidth, CentreY - Charwidth + i*Charwidth, 0.8*Charwidth,color[1])
             else:
                 continue
 
