@@ -26,6 +26,18 @@ whitemode = ["white","black"]
 boolDark = True
 
 
+#Draw Border lines:
+def DrawBorder(screen:object, colour:str) -> None:
+     #Vertical lines
+    #Refer the picture in readme for the position of the lines.
+    pygame.draw.line(screen, color[1], (CentreX - 0.5*Charwidth , CentreY - 1.5*Charwidth), ((CentreX - 0.5*Charwidth) , (CentreY - 1.5*Charwidth) + 3*Charwidth ), 10)
+    pygame.draw.line(screen, color[1], (CentreX + 0.5*Charwidth , CentreY - 1.5*Charwidth), ((CentreX + 0.5*Charwidth) , (CentreY - 1.5*Charwidth) + 3*Charwidth ), 10)
+    
+    #Horizontal lines
+    pygame.draw.line(screen, color[1], (CentreX - 1.5*Charwidth , CentreY - 0.5*Charwidth), ((CentreX - 1.5*Charwidth) + 3*Charwidth , (CentreY - 0.5*Charwidth) ), 10)
+    pygame.draw.line(screen, color[1], (CentreX - 1.5*Charwidth , CentreY + 0.5*Charwidth), ((CentreX - 1.5*Charwidth) + 3*Charwidth , (CentreY + 0.5*Charwidth) ), 10)
+
+#Draw Board
 def DrawBoard(board):
       for i in range(3):
         for j in range (3):
@@ -48,10 +60,11 @@ Avialable_Space =   [[1,1,1],
 
 player = ["X","O"]
 currentPlayer = player[0]
-gameOver = False
+isGameOver = False
+
 
 # Check gameStatus
-def CheckGameStatus(board):
+def CheckGameStatus(board) -> str:
     #Checking Vertical
     for i in range(3):
         if board[i][0] == board[i][1] and board[i][1] == board[i][2]:
@@ -76,16 +89,17 @@ def CheckGameStatus(board):
         return "Continue"
 
 #Check board
-def isBoardFull(board):
+def isBoardFull(board) -> bool:
+    global isGameOver
     for i in range(3):
         for j in range(3):
             if board[i][j] == "":
                 return False
-    gameOver = True
+    isGameOver = True
     return True
 
 #Check which Row/column need to be striken
-def DrawCrosssedLine(board):
+def DrawCrosssedLine(board) -> None:
     #Check Horizontal
     for i in range(3):
         if CheckGameStatus(board)[1] == "Horizontal"+str(i):
@@ -100,6 +114,100 @@ def DrawCrosssedLine(board):
     if CheckGameStatus(board)[1] == "Diagonal2": 
             pygame.draw.line(screen, "RED", (CentreX - 1.5*Charwidth, CentreY + 1.5*Charwidth), (CentreX + 1.5*Charwidth, CentreY - 1.5*Charwidth), 10)
 
+#Playing Randomly 
+def PlayRandomly(board,currentPlayer) -> None:
+    #Randomly choosing the row and column
+    i = random.randint(0,2)
+    j = random.randint(0,2)
+    #Checking if the space is available
+    if Avialable_Space[i][j] == 0:
+        PlayRandomly(board,currentPlayer)
+    else: 
+        if currentPlayer == "X" and Avialable_Space[i][j]!= 0 and isGameOver == False:
+            board[i][j] = currentPlayer
+            Avialable_Space[i][j] = 0
+            DrawBoard(board)
+            
+        if currentPlayer == "O" and Avialable_Space[i][j]!= 0 and isGameOver == False:
+            board[i][j] = currentPlayer
+            Avialable_Space[i][j] = 0
+            DrawBoard(board)
+
+#Returns the next player
+def nextTurn() -> str:
+    global currentPlayer
+    if currentPlayer == "X":
+        currentPlayer = "O"
+    else:
+        currentPlayer = "X"
+    return currentPlayer
+
+#Check if the player has won
+def CheckWin(board) -> None:
+    global isGameOver
+    #Checking the Winner:
+    if CheckGameStatus(board)[0] == "X" :
+        #print("X Won")
+        drawText("X Won", text_font, color[1], screen, CentreX - 450, CentreY)
+        isGameOver = True
+    if CheckGameStatus(board)[0] == "O" :
+        #print("O Won")
+        drawText("O Won", text_font, color[1], screen, CentreX - 450, CentreY)
+        isGameOver = True
+    if isBoardFull(board) and isGameOver == False:
+        #print("Draw")
+        drawText("Draw", text_font, color[1], screen, CentreX - 450, CentreY)
+    if isGameOver == True:
+        DrawCrosssedLine(board)
+
+#Human move:
+def HumanMove(board,currentPlayer) -> None:
+    global isGameOver
+    #Check if the player has won
+    CheckWin(board)
+    mouseX,mouseY = pygame.mouse.get_pos()
+    isMouseClicked = pygame.mouse.get_pressed()
+
+    #Creating all the collition rectangles
+    rect1_1 = pygame.Rect(CentreX - 1.5*Charwidth, CentreY - 1.5*Charwidth, Charwidth, Charwidth)
+    rect1_2 = pygame.Rect(CentreX - 0.5*Charwidth, CentreY - 1.5*Charwidth, Charwidth, Charwidth)
+    rect1_3 = pygame.Rect(CentreX + 0.5*Charwidth, CentreY - 1.5*Charwidth, Charwidth, Charwidth)  
+    rect2_1 = pygame.Rect(CentreX - 1.5*Charwidth, CentreY - 0.5*Charwidth, Charwidth, Charwidth)
+    rect2_2 = pygame.Rect(CentreX - 0.5*Charwidth, CentreY - 0.5*Charwidth, Charwidth, Charwidth)
+    rect2_3 = pygame.Rect(CentreX + 0.5*Charwidth, CentreY - 0.5*Charwidth, Charwidth, Charwidth)
+    rect3_1 = pygame.Rect(CentreX - 1.5*Charwidth, CentreY + 0.5*Charwidth, Charwidth, Charwidth)
+    rect3_2 = pygame.Rect(CentreX - 0.5*Charwidth, CentreY + 0.5*Charwidth, Charwidth, Charwidth)
+    rect3_3 = pygame.Rect(CentreX + 0.5*Charwidth, CentreY + 0.5*Charwidth, Charwidth, Charwidth)
+    
+    AllRect = [rect1_1,rect1_2,rect1_3,rect2_1,rect2_2,rect2_3,rect3_1,rect3_2,rect3_3]
+
+    #Testing:
+    for rect in AllRect:
+        col = "RED"
+        if rect.collidepoint(mouseX,mouseY) and isMouseClicked[0] == 1:
+            col = "GREEN"
+            print("Clicked on ",rect.center)
+        pygame.draw.rect(screen,col, rect, 1)
+        if isGameOver != True:
+            if rect.collidepoint(mouseX,mouseY) and isMouseClicked[0] == 1:
+                if currentPlayer == "X":
+                    j = int((rect.center[0] - CentreX - Charwidth )//Charwidth -1)
+                    i = int((rect.center[1] - CentreY - Charwidth )//Charwidth -1)
+                    board[i][j] = "X"
+                    Avialable_Space[i][j] = 0
+                    DrawBoard(board)
+                if currentPlayer == "O":
+                    j = int((rect.center[0] - CentreX - Charwidth )//Charwidth -1)
+                    i = int((rect.center[1] - CentreY - Charwidth )//Charwidth -1)
+                    board[i][j] = "O"
+                    Avialable_Space[i][j] = 0
+                    DrawBoard(board)
+                #Check if the player has won
+                CheckWin(board)
+                #Change player
+                nextTurn()
+    
+#Main Game Loop
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -121,45 +229,19 @@ while running:
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill(color[0])
-
-    #Vertical lines
-    #Refer the picture in readme for the position of the lines.
-    pygame.draw.line(screen, color[1], (CentreX - 0.5*Charwidth , CentreY - 1.5*Charwidth), ((CentreX - 0.5*Charwidth) , (CentreY - 1.5*Charwidth) + 3*Charwidth ), 10)
-    pygame.draw.line(screen, color[1], (CentreX + 0.5*Charwidth , CentreY - 1.5*Charwidth), ((CentreX + 0.5*Charwidth) , (CentreY - 1.5*Charwidth) + 3*Charwidth ), 10)
-    
-    #Horizontal lines
-    pygame.draw.line(screen, color[1], (CentreX - 1.5*Charwidth , CentreY - 0.5*Charwidth), ((CentreX - 1.5*Charwidth) + 3*Charwidth , (CentreY - 0.5*Charwidth) ), 10)
-    pygame.draw.line(screen, color[1], (CentreX - 1.5*Charwidth , CentreY + 0.5*Charwidth), ((CentreX - 1.5*Charwidth) + 3*Charwidth , (CentreY + 0.5*Charwidth) ), 10)
-
+    #Draw Border
+    DrawBorder(screen, color[1])
+    #Draw Board
     DrawBoard(board)
-    i = random.randint(0,2)
-    j = random.randint(0,2)
-    if currentPlayer == "X" and Avialable_Space[i][j]!= 0 and gameOver == False:
-        board[i][j] = currentPlayer
-        Avialable_Space[i][j] = 0
-        currentPlayer = player[1]
-        DrawBoard(board)
-        
-    if currentPlayer == "O" and Avialable_Space[i][j]!= 0 and gameOver == False:
-        board[i][j] = currentPlayer
-        Avialable_Space[i][j] = 0
-        currentPlayer = player[0]
-        DrawBoard(board)
+    #Play a Random move
+    #PlayRandomly(board,currentPlayer)
+    #Change player
+    HumanMove(board,currentPlayer)
+    nextTurn()
+    #Check if the player has won
+    CheckWin(board)
 
-    #Checking the Winner
-    if CheckGameStatus(board)[0] == "X" :
-        #print("X Won")
-        drawText("X Won", text_font, color[1], screen, CentreX - 450, CentreY)
-        gameOver = True
-    if CheckGameStatus(board)[0] == "O" :
-        #print("O Won")
-        drawText("O Won", text_font, color[1], screen, CentreX - 450, CentreY)
-        gameOver = True
-    if isBoardFull(board) and gameOver == False:
-        #print("Draw")
-        drawText("Draw", text_font, color[1], screen, CentreX - 450, CentreY)
-    if gameOver == True:
-        DrawCrosssedLine(board)
+
     # flip() the display to put your work on screen
     pygame.display.flip() 
 
