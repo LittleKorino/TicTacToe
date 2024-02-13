@@ -89,16 +89,16 @@ def DrawCrosssedLine(board):
     #Check Horizontal
     for i in range(3):
         if CheckGameStatus(board)[1] == "Horizontal"+str(i):
-            pygame.draw.line(screen, (255,0,0), (CentreX - Charwidth + i*Charwidth, CentreY - 1.5*Charwidth), (CentreX - Charwidth + i*Charwidth, CentreY + 1.5*Charwidth), 10)
+            pygame.draw.line(screen, "RED", (CentreX - Charwidth + i*Charwidth, CentreY - 1.5*Charwidth), (CentreX - Charwidth + i*Charwidth, CentreY + 1.5*Charwidth), 10)
     #Check verical
     for i in range(3):
         if CheckGameStatus(board)[1] == "Vertical"+str(i):
-            pygame.draw.line(screen, (255,0,0), (CentreX - 1.5*Charwidth, CentreY - Charwidth + i*Charwidth), (CentreX + 1.5*Charwidth, CentreY - Charwidth + i*Charwidth), 10)
+            pygame.draw.line(screen, "RED", (CentreX - 1.5*Charwidth, CentreY - Charwidth + i*Charwidth), (CentreX + 1.5*Charwidth, CentreY - Charwidth + i*Charwidth), 10)
     #Check the diagonals
     if CheckGameStatus(board)[1] == "Diagonal1":
-            pygame.draw.line(screen, (255,0,0), (CentreX - 1.5*Charwidth, CentreY - 1.5*Charwidth), (CentreX + 1.5*Charwidth, CentreY + 1.5*Charwidth), 10)
+            pygame.draw.line(screen, "RED", (CentreX - 1.5*Charwidth, CentreY - 1.5*Charwidth), (CentreX + 1.5*Charwidth, CentreY + 1.5*Charwidth), 10)
     if CheckGameStatus(board)[1] == "Diagonal2": 
-            pygame.draw.line(screen, (255,0,0), (CentreX - 1.5*Charwidth, CentreY + 1.5*Charwidth), (CentreX + 1.5*Charwidth, CentreY - 1.5*Charwidth), 10)
+            pygame.draw.line(screen, "RED", (CentreX - 1.5*Charwidth, CentreY + 1.5*Charwidth), (CentreX + 1.5*Charwidth, CentreY - 1.5*Charwidth), 10)
 
 while running:
     # poll for events
@@ -146,7 +146,7 @@ while running:
         currentPlayer = player[0]
         DrawBoard(board)
 
-
+    #Checking the Winner
     if CheckGameStatus(board)[0] == "X" :
         #print("X Won")
         drawText("X Won", text_font, color[1], screen, CentreX - 450, CentreY)
