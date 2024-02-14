@@ -13,7 +13,7 @@ running = True
 # Game setup
 (CentreX,CentreY) = (windowwidth/2, windowheight/2)
 Charwidth = 200
-isMouseClicked = False
+
 
 #To render Text in the canvas
 text_font = pygame.font.SysFont('Arial', 50) 
@@ -165,8 +165,7 @@ def HumanMove(board,currentPlayer,isGameOver) -> None:
     #Check if the player has won
     CheckWin(board,isGameOver)
     mouseX,mouseY = pygame.mouse.get_pos()
-    isMouseClicked = pygame.mouse.get_pressed()[0]
-    
+    Humanmoved = False
 
     #Creating all the collition rectangles
     rect1_1 = pygame.Rect(CentreX - 1.5*Charwidth, CentreY - 1.5*Charwidth, Charwidth, Charwidth)
@@ -184,44 +183,53 @@ def HumanMove(board,currentPlayer,isGameOver) -> None:
     #Testing:
     for rect in AllRect:
         col = "RED"
-        if rect.collidepoint(mouseX,mouseY) and isMouseClicked == 1 and click_handled == True:
+        if rect.collidepoint(mouseX,mouseY) and Clicked == True:
             col = "GREEN"
             print("Clicked on ",rect.center) 
         pygame.draw.rect(screen,col, rect, 1)
         if isGameOver != True:
-            if rect.collidepoint(mouseX,mouseY) and isMouseClicked == 1 and click_handled == True:
+            if rect.collidepoint(mouseX,mouseY) and Clicked == True:
                 if currentPlayer == "X":
                     j = int((rect.center[0] - CentreX - Charwidth )//Charwidth -1)
                     i = int((rect.center[1] - CentreY - Charwidth )//Charwidth -1)
                     board[i][j] = "X"
                     Avialable_Space[i][j] = 0
+                    Humanmoved = True
                     DrawBoard(board)
                 if currentPlayer == "O":
                     j = int((rect.center[0] - CentreX - Charwidth )//Charwidth -1)
                     i = int((rect.center[1] - CentreY - Charwidth )//Charwidth -1)
                     board[i][j] = "O"
                     Avialable_Space[i][j] = 0
+                    Humanmoved = True
                     DrawBoard(board)
                 #Check if the player has won
                 CheckWin(board,isGameOver)
                 print(currentPlayer)
-click_handled = False
+    if Humanmoved:
+       currentPlayer = nextTurn(currentPlayer)
+       print("Current Player: ",currentPlayer)
+       return currentPlayer
+
 #Main Game Loop
 while running:
+    Clicked = False
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.MOUSEBUTTONDOWN and not click_handled:
-            click_handled = True
+        if event.type == pygame.MOUSEBUTTONDOWN and not Clicked:
+            print("Mouse Clicked")
+            Clicked = True
         if event.type == pygame.MOUSEBUTTONUP:
-            click_handled = False
+            Clicked = False
         if event.type == pygame.KEYDOWN:       
             # checking if key "A" was pressed
             if event.key == pygame.K_e:
                 print("E pressed")
                 boolDark = not boolDark
+        
         
     if boolDark:
     #Set colour pallette
@@ -238,7 +246,7 @@ while running:
     #Play a Random move
     #PlayRandomly(board,currentPlayer,isGameOver)
     #Change player
-    currentPlayer = nextTurn(currentPlayer)
+    #currentPlayer = nextTurn(currentPlayer)
     #Check if the player has won
     isGameOver = CheckWin(board,isGameOver)
     HumanMove(board,currentPlayer,isGameOver)
