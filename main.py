@@ -94,10 +94,10 @@ def isBoardFull(board,isGameOver) -> bool:
     for i in range(3):
         for j in range(3):
             if board[i][j] == "":
-                isGameOver = False
-                return isGameOver
-    isGameOver = True
-    return isGameOver
+                isBoardFull = False
+                return isBoardFull
+    isBoardFull = True
+    return isBoardFull
 
 #Check which Row/column need to be striken
 def DrawCrosssedLine(board) -> None:
@@ -117,12 +117,24 @@ def DrawCrosssedLine(board) -> None:
 
 #Playing Randomly 
 def PlayRandomly(board,currentPlayer,isGameOver) -> None:
+    #Check if the player has won
+    isGameOver = CheckWin(board,isGameOver)
+    if isGameOver == True:
+        return 0
     #Randomly choosing the row and column
     i = random.randint(0,2)
     j = random.randint(0,2)
     #Checking if the space is available
-    if Avialable_Space[i][j] == 0 and isBoardFull == False:
+
+    #
+    #Debugging:
+    print(j,i)
+    print(Avialable_Space[i][j])
+    print(isBoardFull(board,isGameOver),isGameOver)
+    #
+    if Avialable_Space[i][j] == 0 and isBoardFull(board,isGameOver) == False:
         PlayRandomly(board,currentPlayer,isGameOver)
+        print("Recuringgg")
     else: 
         if currentPlayer == "X" and Avialable_Space[i][j]!= 0 and isGameOver == False:
             board[i][j] = currentPlayer
@@ -135,7 +147,8 @@ def PlayRandomly(board,currentPlayer,isGameOver) -> None:
             DrawBoard(board)
 
 #Returns the next player
-def nextTurn(currentPlayer) -> str:
+def nextTurn() -> str:
+    global currentPlayer
     if currentPlayer == "X":
         currentPlayer = "O"
     else:
@@ -164,6 +177,8 @@ def CheckWin(board,isGameOver) -> None:
 def HumanMove(board,currentPlayer,isGameOver) -> bool:
     #Check if the player has won
     CheckWin(board,isGameOver)
+    if isGameOver == True:
+        return
     mouseX,mouseY = pygame.mouse.get_pos()
     HumanMoved = False
 
@@ -189,16 +204,16 @@ def HumanMove(board,currentPlayer,isGameOver) -> bool:
         pygame.draw.rect(screen,col, rect, 1)
         if isGameOver != True:
             if rect.collidepoint(mouseX,mouseY) and Clicked == True:
-                if currentPlayer == "X":
-                    j = int((rect.center[0] - CentreX - Charwidth )//Charwidth -1)
-                    i = int((rect.center[1] - CentreY - Charwidth )//Charwidth -1)
+
+                j = int((rect.center[0] - CentreX - Charwidth )//Charwidth -1)
+                i = int((rect.center[1] - CentreY - Charwidth )//Charwidth -1)
+
+                if currentPlayer == "X" and Avialable_Space[i][j]!= 0:
                     board[i][j] = "X"
                     Avialable_Space[i][j] = 0
                     DrawBoard(board)
                     HumanMoved = True
-                if currentPlayer == "O":
-                    j = int((rect.center[0] - CentreX - Charwidth )//Charwidth -1)
-                    i = int((rect.center[1] - CentreY - Charwidth )//Charwidth -1)
+                if currentPlayer == "O" and Avialable_Space[i][j]!= 0:
                     board[i][j] = "O"
                     Avialable_Space[i][j] = 0
                     DrawBoard(board)
@@ -240,14 +255,12 @@ while running:
     DrawBorder(screen, color[1])
     #Draw Board
     DrawBoard(board)
-    #Play a Random move
-    #PlayRandomly(board,currentPlayer,isGameOver)
     
-    #Check if the player has won
-    isGameOver = CheckWin(board,isGameOver)
-    if HumanMove(board,currentPlayer,isGameOver):
+    if HumanMove(board,currentPlayer,isGameOver) == True:
         #Change player
-        currentPlayer = nextTurn(currentPlayer)
+        nextTurn()
+        PlayRandomly(board,currentPlayer,isGameOver)
+        nextTurn()
 
 
     # flip() the display to put your work on screen
