@@ -9,7 +9,7 @@ windowheight = 720
 screen = pygame.display.set_mode((windowwidth, windowheight))
 clock = pygame.time.Clock()
 running = True
-
+WaitHumanLatch = False
 # Game setup
 (CentreX,CentreY) = (windowwidth/2, windowheight/2)
 Charwidth = 200
@@ -117,10 +117,13 @@ def DrawCrosssedLine(board) -> None:
             pygame.draw.line(screen, "RED", (CentreX - 1.5*Charwidth, CentreY + 1.5*Charwidth), (CentreX + 1.5*Charwidth, CentreY - 1.5*Charwidth), 10)
 
 #Playing Randomly 
-def PlayRandomly(board,currentPlayer,isGameOver) -> None:
+def PlayRandomly(board,currentPlayer,isGameOver,waitforhuman=False) -> None:
+    global WaitHumanLatch
     #Check if the player has won
     isGameOver = CheckWin(board)
     if isGameOver == True:
+        return 0
+    if WaitHumanLatch == True:
         return 0
     #Randomly choosing the row and column
     i = random.randint(0,2)
@@ -137,16 +140,18 @@ def PlayRandomly(board,currentPlayer,isGameOver) -> None:
         PlayRandomly(board,currentPlayer,isGameOver)
         print("Recuringgg")
     else: 
-        if currentPlayer == "X" and Avialable_Space[i][j]!= 0 and isGameOver == False:
+        if currentPlayer == "X" and Avialable_Space[i][j]!= 0 and isGameOver == False and WaitHumanLatch == False:
             board[i][j] = currentPlayer
             Avialable_Space[i][j] = 0
             DrawBoard(board)
             
-        if currentPlayer == "O" and Avialable_Space[i][j]!= 0 and isGameOver == False:
+        if currentPlayer == "O" and Avialable_Space[i][j]!= 0 and isGameOver == False and WaitHumanLatch == False:
             board[i][j] = currentPlayer
             Avialable_Space[i][j] = 0
             DrawBoard(board)
-
+    if waitforhuman == True:
+        nextTurn()
+        WaitHumanLatch = True
 #Returns the next player
 def nextTurn() -> str:
     global currentPlayer
@@ -225,6 +230,28 @@ def HumanMove(board,currentPlayer,isGameOver) -> bool:
                 print(currentPlayer)
     return HumanMoved
 
+
+def HumanVsHuman(board,currentPlayer,isGameOver) -> None:
+      if HumanMove(board,currentPlayer,isGameOver) == True:
+        #Change player
+        nextTurn()
+
+def HumanVsComputer(board,isGameOver:bool,HumanFirst:bool = True) -> None:
+    global WaitHumanLatch
+    if HumanFirst == True:
+        if HumanMove(board,currentPlayer,isGameOver) == True:
+            nextTurn()
+            PlayRandomly(board,currentPlayer,isGameOver)
+            nextTurn()
+    else:
+        PlayRandomly(board,currentPlayer,isGameOver,True)
+        print(currentPlayer)
+        if HumanMove(board,currentPlayer,isGameOver) == True:
+            nextTurn()
+            WaitHumanLatch = False
+            PlayRandomly(board,currentPlayer,isGameOver,True)
+            
+
 #Main Game Loop
 while running:
     Clicked = False
@@ -258,12 +285,9 @@ while running:
     #Draw Board
     DrawBoard(board)
     
-    if HumanMove(board,currentPlayer,isGameOver) == True:
-        #Change player
-        nextTurn()
-        PlayRandomly(board,currentPlayer,isGameOver)
-        nextTurn()
+    #HumanVsHuman(board,currentPlayer,isGameOver)
 
+    HumanVsComputer(board,isGameOver,True)
 
     # flip() the display to put your work on screen
     pygame.display.flip() 
