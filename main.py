@@ -161,11 +161,11 @@ def CheckWin(board,isGameOver) -> None:
     return isGameOver
 
 #Human move:
-def HumanMove(board,currentPlayer,isGameOver) -> None:
+def HumanMove(board,currentPlayer,isGameOver) -> bool:
     #Check if the player has won
     CheckWin(board,isGameOver)
     mouseX,mouseY = pygame.mouse.get_pos()
-    Humanmoved = False
+    HumanMoved = False
 
     #Creating all the collition rectangles
     rect1_1 = pygame.Rect(CentreX - 1.5*Charwidth, CentreY - 1.5*Charwidth, Charwidth, Charwidth)
@@ -194,22 +194,19 @@ def HumanMove(board,currentPlayer,isGameOver) -> None:
                     i = int((rect.center[1] - CentreY - Charwidth )//Charwidth -1)
                     board[i][j] = "X"
                     Avialable_Space[i][j] = 0
-                    Humanmoved = True
                     DrawBoard(board)
+                    HumanMoved = True
                 if currentPlayer == "O":
                     j = int((rect.center[0] - CentreX - Charwidth )//Charwidth -1)
                     i = int((rect.center[1] - CentreY - Charwidth )//Charwidth -1)
                     board[i][j] = "O"
                     Avialable_Space[i][j] = 0
-                    Humanmoved = True
                     DrawBoard(board)
+                    HumanMoved = True
                 #Check if the player has won
                 CheckWin(board,isGameOver)
                 print(currentPlayer)
-    if Humanmoved:
-       currentPlayer = nextTurn(currentPlayer)
-       print("Current Player: ",currentPlayer)
-       return currentPlayer
+    return HumanMoved
 
 #Main Game Loop
 while running:
@@ -245,11 +242,12 @@ while running:
     DrawBoard(board)
     #Play a Random move
     #PlayRandomly(board,currentPlayer,isGameOver)
-    #Change player
-    #currentPlayer = nextTurn(currentPlayer)
+    
     #Check if the player has won
     isGameOver = CheckWin(board,isGameOver)
-    HumanMove(board,currentPlayer,isGameOver)
+    if HumanMove(board,currentPlayer,isGameOver):
+        #Change player
+        currentPlayer = nextTurn(currentPlayer)
 
 
     # flip() the display to put your work on screen
