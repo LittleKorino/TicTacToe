@@ -17,6 +17,7 @@ Charwidth = 200
 
 #To render Text in the canvas
 text_font = pygame.font.SysFont('Arial', 50) 
+
 def drawText(text:str, font:object, colour:str, surface:object, x:int, y:int) -> None:
     img = font.render(text, True, colour)
     surface.blit(img, (x, y))
@@ -90,7 +91,7 @@ def CheckGameStatus(board,isGameOver) -> str:
         return "Continue",isGameOver
 
 #Check board
-def isBoardFull(board,isGameOver) -> bool:
+def isBoardFull(board) -> bool:
     for i in range(3):
         for j in range(3):
             if board[i][j] == "":
@@ -118,7 +119,7 @@ def DrawCrosssedLine(board) -> None:
 #Playing Randomly 
 def PlayRandomly(board,currentPlayer,isGameOver) -> None:
     #Check if the player has won
-    isGameOver = CheckWin(board,isGameOver)
+    isGameOver = CheckWin(board)
     if isGameOver == True:
         return 0
     #Randomly choosing the row and column
@@ -130,9 +131,9 @@ def PlayRandomly(board,currentPlayer,isGameOver) -> None:
     #Debugging:
     print(j,i)
     print(Avialable_Space[i][j])
-    print(isBoardFull(board,isGameOver),isGameOver)
+    print(isBoardFull(board),isGameOver)
     #
-    if Avialable_Space[i][j] == 0 and isBoardFull(board,isGameOver) == False:
+    if Avialable_Space[i][j] == 0 and isBoardFull(board) == False:
         PlayRandomly(board,currentPlayer,isGameOver)
         print("Recuringgg")
     else: 
@@ -156,7 +157,8 @@ def nextTurn() -> str:
     return currentPlayer
 
 #Check if the player has won
-def CheckWin(board,isGameOver) -> None:
+def CheckWin(board) -> None:
+    global isGameOver
     #Checking the Winner:
     if CheckGameStatus(board,isGameOver)[0] == "X" :
         #print("X Won")
@@ -166,7 +168,7 @@ def CheckWin(board,isGameOver) -> None:
         #print("O Won")
         drawText("O Won", text_font, color[1], screen, CentreX - 450, CentreY)
         isGameOver = True
-    if isBoardFull(board,isGameOver) and isGameOver == False:
+    if isBoardFull(board) and isGameOver == False:
         #print("Draw")
         drawText("Draw", text_font, color[1], screen, CentreX - 450, CentreY)
     if isGameOver == True:
@@ -176,7 +178,7 @@ def CheckWin(board,isGameOver) -> None:
 #Human move:
 def HumanMove(board,currentPlayer,isGameOver) -> bool:
     #Check if the player has won
-    CheckWin(board,isGameOver)
+    CheckWin(board)
     if isGameOver == True:
         return
     mouseX,mouseY = pygame.mouse.get_pos()
@@ -208,18 +210,18 @@ def HumanMove(board,currentPlayer,isGameOver) -> bool:
                 j = int((rect.center[0] - CentreX - Charwidth )//Charwidth -1)
                 i = int((rect.center[1] - CentreY - Charwidth )//Charwidth -1)
 
-                if currentPlayer == "X" and Avialable_Space[i][j]!= 0:
+                if currentPlayer == "X" and Avialable_Space[i][j]!= 0 and isGameOver == False:
                     board[i][j] = "X"
                     Avialable_Space[i][j] = 0
                     DrawBoard(board)
                     HumanMoved = True
-                if currentPlayer == "O" and Avialable_Space[i][j]!= 0:
+                if currentPlayer == "O" and Avialable_Space[i][j]!= 0 and isGameOver == False:
                     board[i][j] = "O"
                     Avialable_Space[i][j] = 0
                     DrawBoard(board)
                     HumanMoved = True
                 #Check if the player has won
-                CheckWin(board,isGameOver)
+                CheckWin(board)
                 print(currentPlayer)
     return HumanMoved
 
