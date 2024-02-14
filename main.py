@@ -125,20 +125,14 @@ def PlayRandomly(board,currentPlayer,isGameOver,waitforhuman=False) -> None:
         return 0
     if WaitHumanLatch == True:
         return 0
+    
     #Randomly choosing the row and column
     i = random.randint(0,2)
     j = random.randint(0,2)
+    
     #Checking if the space is available
-
-    #
-    #Debugging:
-    print(j,i)
-    print(Avialable_Space[i][j])
-    print(isBoardFull(board),isGameOver)
-    #
     if Avialable_Space[i][j] == 0 and isBoardFull(board) == False:
         PlayRandomly(board,currentPlayer,isGameOver)
-        print("Recuringgg")
     else: 
         if currentPlayer == "X" and Avialable_Space[i][j]!= 0 and isGameOver == False and WaitHumanLatch == False:
             board[i][j] = currentPlayer
@@ -245,7 +239,6 @@ def HumanVsComputer(board,isGameOver:bool,HumanFirst:bool = True) -> None:
             nextTurn()
     else:
         PlayRandomly(board,currentPlayer,isGameOver,True)
-        print(currentPlayer)
         if HumanMove(board,currentPlayer,isGameOver) == True:
             nextTurn()
             WaitHumanLatch = False
@@ -261,14 +254,12 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN and not Clicked:
-            print("Mouse Clicked")
             Clicked = True
         if event.type == pygame.MOUSEBUTTONUP:
             Clicked = False
         if event.type == pygame.KEYDOWN:       
             # checking if key "A" was pressed
             if event.key == pygame.K_e:
-                print("E pressed")
                 boolDark = not boolDark
         
         
@@ -287,7 +278,7 @@ while running:
     
     #HumanVsHuman(board,currentPlayer,isGameOver)
 
-    HumanVsComputer(board,isGameOver,True)
+    HumanVsComputer(board,isGameOver,False)
 
     # flip() the display to put your work on screen
     pygame.display.flip() 
