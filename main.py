@@ -73,11 +73,10 @@ while running:
 
     #currentPlayer = Utilities.HumanVsHuman(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer)
 
-    
-
-    Utilities.HumanVsComputer(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer,isGameOver,False)
+    Utilities.HumanVsComputerMiniMax(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer,isGameOver,False)
    
-    #Utilities.PlayMove(Utilities.PlayRandomly(board,Avialable_Space,currentPlayer),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
+    #Utilities.PlayMove(Utilities.bestMove(board,isGameOver),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
+    #currentPlayer = Utilities.nextTurn(currentPlayer)
     #print(PlayMove(bestMove(board,currentPlayer,isGameOver),board,currentPlayer,isGameOver))
 
     drawXO.DrawWinnerCheckWin(screen,CentreX,CentreY,Charwidth,color,text_font,board,isGameOver)

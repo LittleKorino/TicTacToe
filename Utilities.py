@@ -15,6 +15,9 @@ def isBoardFull(board) -> bool:
 
 
 def PlayMove(pos,screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver,waitforhuman=False) -> None:
+    if pos == []:
+        print("Position is Empty")
+        return
     i,j = pos
     global WaitHumanLatch
     #Check if the player has won
@@ -177,67 +180,78 @@ def HumanVsComputer(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color
             currentPlayer = nextTurn(currentPlayer)
             return currentPlayer
 
+def HumanVsComputerMiniMax(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer,isGameOver:bool,HumanFirst:bool = True) -> None:
+    global WaitHumanLatch
+    if HumanFirst == True:
+        if HumanMove(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer) == True:
+            currentPlayer = nextTurn(currentPlayer)
+            PlayMove(bestMove(board,isGameOver),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
+            currentPlayer = nextTurn(currentPlayer)
+            return currentPlayer
+
     else:
         TmpVariable = currentPlayer
-        currentPlayer = PlayMove(PlayRandomly(board,Avialable_Space,currentPlayer),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver,True)
+        currentPlayer = PlayMove(bestMove(board,isGameOver),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver,True)
         if currentPlayer == 0:
             currentPlayer = TmpVariable
         currentPlayer = nextTurn(currentPlayer)
         if HumanMove(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer) == True:
             currentPlayer = nextTurn(currentPlayer)
             WaitHumanLatch = False
-            PlayMove(PlayRandomly(board,Avialable_Space,currentPlayer),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver,True)
+            PlayMove(bestMove(board,isGameOver),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver,True)
             return currentPlayer
         return currentPlayer
 
 
-# def minimax(board,depth,isMaximizing) -> int:
-#     score = 0
-#     if evaluation(board)!= None:
-#         score = evaluation(board)
-#         print(score)
-#         return score
-#     if isMaximizing:
-#         bestScore = -10000
-
-#         for i in range(3):
-#             for j in range(3):
-#                 if board[i][j] == "":
-#                     board[i][j] = currentPlayer
-#                     nextTurn()
-
-#                     if evaluation(board) != None:
-#                         score = minimax(board,depth + 1,False)
-#                     board[i][j] = ""
-#                     bestScore = max(bestScore,score)
-#         return bestScore
-#     else:
-#         bestScore = 10000
-
-#         for i in range(3):
-#             for j in range(3):
-#                 if board[i][j] == "":
-#                     board[i][j] = currentPlayer
-#                     score = minimax(board,depth + 1,True)
-#                     board[i][j] = ""
-#                     bestScore = min(bestScore,score)
-#         return bestScore
+def minimax(board,depth,isMaximizing) -> int:
     
-# def bestMove(board,currentPlayer,isGameOver):
-#     bestScore = -10000
-#     bestMove = []
-#     score = 0
-#     for i in range(3):
-#         for j in range(3):
-#             if board[i][j] == "":
-#                 board[i][j] = currentPlayer
-#                 score = minimax(board,0,False)
-#                 board[i][j] = ""
-#                 if score > bestScore:
-#                     bestScore = score
-#                     bestMove = [i,j]
-#     print(bestMove)
-#     return bestMove
+    #Check Result and assign the score 
+    result = CheckGameStatus(board)[0]
+    if result != "Null":
+        if result == "X":
+            score = 1
+        if result == "O":
+            score = -1
+        if result == "Tie":
+            score = 0  
+        return score
+      
+    if isMaximizing:
+        bestScore = -10000
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == "":
+                    board[i][j] = "X"
+                    score = minimax(board,depth + 1,False)
+                    board[i][j] = ""
+                    bestScore = max(bestScore,score)
+        return bestScore
+    else:
+        bestScore = 10000
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == "":
+                    board[i][j] = "O"
+                    score = minimax(board,depth + 1,True)
+                    board[i][j] = ""
+                    bestScore = min(bestScore,score)
+        return bestScore
+    
+def bestMove(board,isGameOver):
+    bestScore = -10000
+    bestMove = []
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == "":
+                board[i][j] = "X"
+                score = minimax(board,0,False)
+                board[i][j] = ""
+                if score > bestScore:
+                    bestScore = score
+                    bestMove = [i,j]
+    print(f'Minimax has chosen {bestMove} with score as {bestScore}')
+
+    return bestMove
 
 # def evaluation(board):
 #     if CheckGameStatus(board)[0] == "X":
