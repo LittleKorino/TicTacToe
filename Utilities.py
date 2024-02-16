@@ -69,11 +69,11 @@ def CheckGameStatus(board) -> str:
             return (winner,"Horizontal"+str(i),isGameOver)
 
     #Checking Diagonal
-    if board[0][0] == board[1][1] and board[1][1] == board[2][2] and board[i][0] != "":
+    if board[0][0] == board[1][1] and board[1][1] == board[2][2] and board[0][0] != "":
         isGameOver = True
         winner = board[0][0]
         return (winner,"Diagonal1",isGameOver)
-    elif board[0][2] == board[1][1] and board[1][1] == board[2][0] and board[i][0] != "":
+    elif board[0][2] == board[1][1] and board[1][1] == board[2][0] and board[0][2] != "":
         isGameOver = True
         winner = board[0][2]
         return (winner,"Diagonal2",isGameOver)
