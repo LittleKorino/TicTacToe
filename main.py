@@ -9,13 +9,14 @@ windowheight = 720
 screen = pygame.display.set_mode((windowwidth, windowheight))
 clock = pygame.time.Clock()
 running = True
+
+#Global Variable
 WaitHumanLatch = False
-# Game setup
 (CentreX,CentreY) = (windowwidth/2, windowheight/2)
 Charwidth = 200
 
 
-#To render Text in the canvas
+#Choosing a Font for the canvas
 text_font = pygame.font.SysFont('Arial', 50) 
 
 # Set colours
@@ -24,6 +25,7 @@ whitemode = ["white","black"]
 boolDark = True
 
 #Board Setup
+#This represents the state of the board (ie) It tracks the location of Xs and Os
 board = [["","",""],
         ["","",""],
         ["","",""]]
@@ -51,7 +53,6 @@ while running:
         if event.type == pygame.MOUSEBUTTONUP:
             Clicked = False
         if event.type == pygame.KEYDOWN:       
-            # checking if key "A" was pressed
             if event.key == pygame.K_e:
                 boolDark = not boolDark
         
@@ -73,12 +74,10 @@ while running:
 
     #currentPlayer = Utilities.HumanVsHuman(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer)
 
-    Utilities.HumanVsComputerMiniMax(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer,isGameOver,False)
+    Utilities.HumanVsComputerMiniMax(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer,isGameOver,True)
    
     #Utilities.PlayMove(Utilities.bestMove(board,isGameOver),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
-    #currentPlayer = Utilities.nextTurn(currentPlayer)
-    #print(PlayMove(bestMove(board,currentPlayer,isGameOver),board,currentPlayer,isGameOver))
-
+    
     drawXO.DrawWinnerCheckWin(screen,CentreX,CentreY,Charwidth,color,text_font,board,isGameOver)
     # flip() the display to put your work on screen
     pygame.display.flip() 
