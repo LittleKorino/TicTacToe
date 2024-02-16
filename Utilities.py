@@ -110,7 +110,6 @@ def PlayRandomly(board,Avialable_Space,currentPlayer) -> list:
 def HumanMove(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer) -> bool:
     #Check if the player has won
     isGameOver = CheckGameStatus(board)[2]
-    print(isGameOver)
     if isGameOver == True:
         return
     mouseX,mouseY = pygame.mouse.get_pos()
@@ -136,7 +135,7 @@ def HumanMove(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Click
             col = "GREEN"
             print("Clicked on ",rect.center) 
         pygame.draw.rect(screen,col, rect, 1)
-        print(isGameOver)
+        #print(isGameOver)
         if isGameOver != True:
             if rect.collidepoint(mouseX,mouseY) and Clicked == True:
                 
@@ -145,6 +144,7 @@ def HumanMove(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Click
 
                 print(i,j)
                 print(currentPlayer)
+                print(isGameOver)
                 if currentPlayer == "X" and Avialable_Space[i][j]!= 0 and isGameOver == False:
                     board[i][j] = "X"
                     Avialable_Space[i][j] = 0
@@ -158,7 +158,7 @@ def HumanMove(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Click
                     drawXO.DrawBoard(screen,board,color,Charwidth,CentreX,CentreY)
                     HumanMoved = True
                 #Check if the player has won
-                CheckGameStatus(board)[1]
+                isGameOver = CheckGameStatus(board)[2]
     return HumanMoved
 
 
@@ -175,13 +175,20 @@ def HumanVsComputer(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color
             currentPlayer = nextTurn(currentPlayer)
             PlayMove(PlayRandomly(board,Avialable_Space,currentPlayer),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
             currentPlayer = nextTurn(currentPlayer)
-    else:
-        PlayMove(PlayRandomly(board,Avialable_Space,currentPlayer),board,Avialable_Space,currentPlayer,isGameOver)
-        if HumanMove(board,currentPlayer,isGameOver) == True:
-            nextTurn()
-            WaitHumanLatch = False
-            PlayRandomly(board,currentPlayer,isGameOver,True)
+            return currentPlayer
 
+    else:
+        TmpVariable = currentPlayer
+        currentPlayer = PlayMove(PlayRandomly(board,Avialable_Space,currentPlayer),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver,True)
+        if currentPlayer == 0:
+            currentPlayer = TmpVariable
+        currentPlayer = nextTurn(currentPlayer)
+        if HumanMove(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer) == True:
+            currentPlayer = nextTurn(currentPlayer)
+            WaitHumanLatch = False
+            PlayMove(PlayRandomly(board,Avialable_Space,currentPlayer),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver,True)
+            return currentPlayer
+        return currentPlayer
 
 
 # def minimax(board,depth,isMaximizing) -> int:

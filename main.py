@@ -75,12 +75,11 @@ while running:
 
     
 
-    #Utilities.HumanVsComputer(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer,isGameOver,True)
-    
-    Utilities.PlayMove(Utilities.PlayRandomly(board,Avialable_Space,currentPlayer),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
+    Utilities.HumanVsComputer(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer,isGameOver,False)
+   
+    #Utilities.PlayMove(Utilities.PlayRandomly(board,Avialable_Space,currentPlayer),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
     #print(PlayMove(bestMove(board,currentPlayer,isGameOver),board,currentPlayer,isGameOver))
-    currentPlayer = Utilities.nextTurn(currentPlayer)
-    print(isGameOver)
+
     drawXO.DrawWinnerCheckWin(screen,CentreX,CentreY,Charwidth,color,text_font,board,isGameOver)
     # flip() the display to put your work on screen
     pygame.display.flip() 
