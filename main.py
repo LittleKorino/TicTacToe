@@ -30,7 +30,7 @@ board = [["","",""],
         ["","",""],
         ["","",""]]
 
-Avialable_Space =   [[1,1,1],
+Available_Space =   [[1,1,1],
                     [1,1,1],
                     [1,1,1]]
 
@@ -72,11 +72,10 @@ while running:
 
     isGameOver = Utilities.CheckGameStatus(board)[2]
 
-    #currentPlayer = Utilities.HumanVsHuman(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer)
 
-    Utilities.HumanVsComputerMiniMax(screen,board,Avialable_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer,isGameOver,True)
-   
-    #Utilities.PlayMove(Utilities.bestMove(board,isGameOver),screen,board,Avialable_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
+    #currentPlayer = Utilities.HumanVsHuman(screen,board,Available_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer)
+    Utilities.HumanVsComputerMiniMax(screen,board,Available_Space,CentreX,CentreY,Charwidth,color,Clicked,currentPlayer,isGameOver,False)
+    #Utilities.MinimaxVsMinimax(screen,board,Available_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
     
     drawXO.DrawWinnerCheckWin(screen,CentreX,CentreY,Charwidth,color,text_font,board,isGameOver)
     # flip() the display to put your work on screen

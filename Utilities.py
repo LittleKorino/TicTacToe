@@ -330,7 +330,7 @@ This is a simple function that uses minimax to find the best move for X at the c
 
     """
     bestScore = -10000
-    bestMove = []
+    bestMoveX = []
     for i in range(3):
         for j in range(3):
             if board[i][j] == "":
@@ -339,7 +339,8 @@ This is a simple function that uses minimax to find the best move for X at the c
                 board[i][j] = ""
                 if score > bestScore:
                     bestScore = score
-                    bestMove = [i,j]
+                    bestMoveX = [i,j]
+    return bestMoveX
 
 def bestMoveO(board):
     """
@@ -360,3 +361,9 @@ This is a simple function that uses MiniMax to find the best move for O at the c
                     bestMoveO = [i,j]
 
     return bestMoveO
+
+def MinimaxVsMinimax(screen,board,Available_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver):
+    PlayMove(bestMoveX(board),screen,board,Available_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
+    currentPlayer = nextTurn(currentPlayer)
+    PlayMove(bestMoveO(board),screen,board,Available_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
+    currentPlayer=nextTurn(currentPlayer)
