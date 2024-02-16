@@ -96,16 +96,14 @@ def PlayRandomly(board,Avialable_Space,currentPlayer) -> list:
     isGameOver = CheckGameStatus(board)[2]
     if isGameOver == True:
         return (0,0)
-    ValueReturned = False
     #Randomly choosing the row and column
     i = random.randint(0,2)
     j = random.randint(0,2)
     
     #Checking if the space is available
-    if Avialable_Space[i][j] == 0 and isBoardFull != True and ValueReturned == False:
-        PlayRandomly(board,Avialable_Space,currentPlayer)
+    if Avialable_Space[i][j] == 0 and isBoardFull != True:
+        return PlayRandomly(board,Avialable_Space,currentPlayer)
     else: 
-       ValueReturned = True
        return (i,j)
     
 
