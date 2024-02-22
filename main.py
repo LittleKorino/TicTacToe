@@ -17,7 +17,7 @@ Charwidth = 200
 
 
 #Choosing a Font for the canvas
-text_font = pygame.font.SysFont('Arial', 50) 
+text_font = pygame.font.Font("Res/Fonts/KnightWarrior-w16n8.ttf", 50)
 
 # Set colours
 darkmode = ["black","white"]
@@ -78,6 +78,8 @@ while running:
     #Utilities.MinimaxVsMinimax(screen,board,Available_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
     
     drawXO.DrawWinnerCheckWin(screen,CentreX,CentreY,Charwidth,color,text_font,board,isGameOver)
+
+    isGameOver,board,Available_Space = Utilities.RestBoard(windowwidth,windowheight,screen,board,Available_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver,Clicked)
     # flip() the display to put your work on screen
     pygame.display.flip() 
 
