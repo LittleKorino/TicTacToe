@@ -79,7 +79,7 @@ while running:
     
     drawXO.DrawWinnerCheckWin(screen,CentreX,CentreY,Charwidth,color,text_font,board,isGameOver)
 
-    isGameOver,board,Available_Space = Utilities.RestBoard(windowwidth,windowheight,screen,board,Available_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver,Clicked)
+    isGameOver,board,Available_Space = Utilities.RestBoard(windowwidth,windowheight,screen,board,Available_Space,color,isGameOver,Clicked)
     # flip() the display to put your work on screen
     pygame.display.flip() 
 

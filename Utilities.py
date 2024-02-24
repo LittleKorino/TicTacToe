@@ -368,7 +368,7 @@ def MinimaxVsMinimax(screen,board,Available_Space,color,Charwidth,CentreX,Centre
     PlayMove(bestMoveO(board),screen,board,Available_Space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver)
     currentPlayer=nextTurn(currentPlayer)
 
-def RestBoard(windowwidth,windowheight,screen,board,Available_space,color,Charwidth,CentreX,CentreY,currentPlayer,isGameOver,Clicked):
+def RestBoard(windowwidth,windowheight,screen,board,Available_space,color,isGameOver,Clicked):
     global WaitHumanLatch
     isGameOver = CheckGameStatus(board)[2]
     if isGameOver == True:
