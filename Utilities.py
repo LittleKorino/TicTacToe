@@ -374,12 +374,12 @@ def RestBoard(windowwidth,windowheight,screen,board,Available_space,color,Charwi
     if isGameOver == True:
         rect1 = pygame.Rect(0.8*windowwidth, 0.8*windowheight, 120, 60)
         pygame.draw.rect(screen, color[1], rect1)
-        drawXO.drawText("Reset", pygame.font.Font("Res/Fonts/KnightWarrior-w16n8.ttf", 50), color[0],screen,0.8*windowwidth,0.8*windowheight)
+        drawXO.drawText("Reset", pygame.font.Font("Res/Fonts/KnightWarrior-w16n8.ttf", 50), color[0],screen,0.8*windowwidth + 4,0.8*windowheight)
         drawXO.drawText("Game Over", pygame.font.Font("Res/Fonts/KnightWarrior-w16n8.ttf", 50), color[1],screen,0.05*windowwidth,0.1*windowheight)
         mouseX,mouseY = pygame.mouse.get_pos()
         if rect1.collidepoint(mouseX,mouseY):
             pygame.draw.rect(screen, (255,0,0), rect1)
-            drawXO.drawText("Reset", pygame.font.Font("Res/Fonts/KnightWarrior-w16n8.ttf", 50), color[0],screen,0.8*windowwidth,0.8*windowheight)
+            drawXO.drawText("Reset", pygame.font.Font("Res/Fonts/KnightWarrior-w16n8.ttf", 50), color[0],screen,0.8*windowwidth + 4,0.8*windowheight)
             if Clicked == True:
                 #Redeclaring the default global variables
                 board = [["","",""],
